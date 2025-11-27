@@ -64,6 +64,23 @@ cd quickcart
 
 npm install
 ```
+
+## Create .env.local
+
+```
+NEXTAUTH_SECRET=your_secret
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_secret
+BACKEND_URL=http://localhost:5000
+
+```
+
+```
+npm run dev
+
+```
+
 ## Backend (Express.js API)
 | Method | Route | Description |
 |--------|--------|-------------|
