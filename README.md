@@ -59,7 +59,7 @@ QuickCart/
 
 ## 📌 1. Clone the Repository
 ```bash
-git clone https://github.com/nafiz512/QuickCart-using-Next.js.git
+git clone [https://github.com/nafiz512/QuickCart-using-Next.js.git](https://github.com/nafiz512/QuickCart-using-Next.js.git)
 cd quickcart
 
 npm install
