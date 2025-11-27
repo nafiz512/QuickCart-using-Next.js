@@ -2,14 +2,17 @@
 import React, { use } from "react";
 import { format } from "date-fns";
 import AuthContext from "@/context/AuthContext";
+import useAxios from "@/hooks/useAxios";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const AddProduct = () => {
     const { user } = use(AuthContext);
+    const axios = useAxios();
     const handleAddProduct = (e) => {
         e.preventDefault();
 
         const form = e.target;
-
         const now = new Date();
         const formattedNow = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX");
 
@@ -26,7 +29,26 @@ const AddProduct = () => {
             updatedAt: formattedNow,
             ratings: parseFloat((Math.random() * 4 + 1).toFixed(1)),
         };
-        console.log(newProduct);
+        axios
+            .post(`/products`, newProduct)
+            .then((data) => {
+                if (data.data.insertedId) {
+                    Swal.fire({
+                        title: "Added successfully!",
+                        icon: "success",
+                        draggable: true,
+                    });
+                }
+                // console.log(data.data);
+            })
+            .catch((error) => {
+                // console.log(error);
+                Swal.fire({
+                    title: `${error.message}`,
+                    text: "That thing is still around?",
+                    icon: "question",
+                });
+            });
     };
     return (
         <div className="max-w-[450px] mx-auto my-5 md:my-15">

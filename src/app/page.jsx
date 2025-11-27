@@ -1,18 +1,27 @@
+"use client";
 import Banner from "@/components/Banner";
 import FeaturedProduct from "@/components/FeaturedProduct";
 import HeaderSlider from "@/components/HeaderSlider";
 import HomeProducts from "@/components/HomeProducts";
 import NewsLetter from "@/components/NewsLetter";
 import RecentProducts from "@/components/RecentProducts";
-import Image from "next/image";
+import useAxios from "@/hooks/useAxios";
+import { useEffect, useState } from "react";
 
 const ACCENT_COLOR = "#00C897";
 export default function Home() {
+    const axios = useAxios();
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        axios.get(`/products`).then((data) => {
+            setProducts(data.data);
+        });
+    }, [axios]);
     return (
         <div className=" min-h-screen bg-zinc-50 font-sans dark:bg-black">
             <HeaderSlider />
-            <RecentProducts></RecentProducts>
-            <HomeProducts />
+            <RecentProducts products={products}></RecentProducts>
+            <HomeProducts products={products} />
             <FeaturedProduct />
             <Banner />
             <div className="my-15">

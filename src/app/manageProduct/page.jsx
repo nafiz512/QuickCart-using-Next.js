@@ -1,32 +1,56 @@
 "use client";
+import AuthContext from "@/context/AuthContext";
+import useAxios from "@/hooks/useAxios";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const page = () => {
-    const [vehiclesData, setVehicleData] = useState([
-        {
-            _id: 1,
-            vehicleName: "sample",
-            location: "dhaka",
-            pricePerDay: 12,
-            availability: "Available",
-        },
-    ]);
+    const axios = useAxios();
+    const { user } = useContext(AuthContext);
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        if (!user?.email) return;
 
-    const handleDelete = () => {
-        console.log("delete hited");
+        axios.get(`/products?email=${user?.email}`).then((res) => {
+            setProducts(res.data);
+        });
+    }, [axios, user?.email]);
+
+    const handleDelete = (id) => {
+        axios.delete(`/products/${id}`).then((data) => {
+            if (data.data.deletedCount) {
+                Swal.fire({
+                    title: "Deleted successfully!",
+                    icon: "success",
+                    draggable: true,
+                });
+                const newProducts = products.filter(
+                    (product) => product._id != id
+                );
+                setProducts(newProducts);
+            }
+        });
     };
-
+    if (!products.length)
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <p className="text-2xl text-red-400">
+                    Please add some products first, No porducts to show.
+                </p>
+            </div>
+        );
     return (
         <div className="px-1 md:px-40 flex flex-1 justify-center py-5">
             <div className="layout-content-container flex flex-col max-w-[960px] flex-1 w-full">
                 {/* Header */}
                 <div className="flex flex-wrap justify-between gap-3 p-4">
                     <p className="text-base-content tracking-light text-2xl md:text-4xl font-bold leading-tight min-w-72">
-                        My Vehicles
+                        My Products
                     </p>
                 </div>
-                <div>
+                {/* <div>
                     <dialog id="my_modal_1" className="modal">
                         <div className="modal-box">
                             <div className="flex justify-between">
@@ -42,7 +66,7 @@ const page = () => {
                             </p>
                             <div className="modal-action">
                                 <form method="dialog" className="space-x-3">
-                                    {/* if there is a button in form, it will close the modal */}
+                             
                                     <button
                                         onClick={handleDelete}
                                         className="btn btn-success"
@@ -53,7 +77,7 @@ const page = () => {
                             </div>
                         </div>
                     </dialog>
-                </div>
+                </div> */}
 
                 {/* Table Container */}
                 <div className="custom-shadow rounded-lg py-3">
@@ -62,10 +86,10 @@ const page = () => {
                             <thead>
                                 <tr className="bg-base-200">
                                     <th className="px-4 py-3 text-left text-base-content text-sm font-medium  w-[250px]">
-                                        Vehicle
+                                        Product Name
                                     </th>
                                     <th className="px-4 py-3 text-left text-base-content text-sm font-medium  w-[200px]">
-                                        Location
+                                        Category
                                     </th>
                                     <th className="px-4 py-3 text-left text-base-content text-sm font-medium  w-[150px]">
                                         Price
@@ -79,54 +103,57 @@ const page = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {vehiclesData.map((vehicle) => (
+                                {products.map((product) => (
                                     <tr
-                                        key={vehicle?._id}
+                                        key={product?._id}
                                         className="border-t border-base-300 hover:bg-base-200/50 transition-colors"
                                     >
-                                        {/* Vehicle Name */}
+                                        {/* product Name */}
                                         <td className="h-[72px] px-4 py-2 text-base-content text-sm font-normal leading-normal">
-                                            {vehicle?.vehicleName}
+                                            {product?.productName}
                                         </td>
 
-                                        {/* Location */}
+                                        {/* category */}
                                         <td className="h-[72px] px-4 py-2 text-base-content/70 text-sm font-normal leading-normal">
-                                            {vehicle?.location}
+                                            {product?.category}
                                         </td>
 
                                         {/* Price */}
                                         <td className="h-[72px] px-4 py-2 text-base-content/70 text-sm font-normal leading-normal">
-                                            {vehicle?.pricePerDay}
+                                            {product?.price}
                                         </td>
 
                                         {/* availability */}
-                                        <td className="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
-                                            <button
-                                                className={`flex min-w-[84px] max-w-[480px] cursor-default items-center justify-center rounded-sm shadow-xl h-8 px-4 text-sm font-medium leading-normal w-full `}
-                                            >
-                                                <span className="truncate">
-                                                    Available
-                                                </span>
-                                            </button>
+                                        <td className="h-[72px] px-4 py-2 text-base-content/70 text-sm font-normal leading-normal">
+                                            Available
                                         </td>
 
                                         {/* Actions */}
                                         <td className="h-[72px] px-4 py-2 text-base-content/70 text-sm font-bold leading-normal tracking-[0.015em]">
                                             <div className="flex gap-3">
-                                                <Link href={"/"}>
+                                                <Link
+                                                    href={`/shop/${product._id}`}
+                                                >
                                                     <button className="text-primary px-3 py-2 rounded-sm bg-blue-200 hover:text-primary-focus hover:cursor-pointer transition-colors">
                                                         View
                                                     </button>
                                                 </Link>
                                                 <span className="text-base-300"></span>
                                                 <Link href={"/"}>
-                                                    <button className="text-secondary px-3 py-2 rounded-sm bg-green-200 hover:text-secondary-focus hover:cursor-pointer transition-colors">
+                                                    <button className=" px-3 py-2 rounded-sm bg-green-200  hover:cursor-pointer transition-colors">
                                                         Update
                                                     </button>
                                                 </Link>
 
                                                 <span className="text-base-300"></span>
-                                                <button className="text-error px-3 py-2 rounded-sm bg-red-200 hover:text-error-focus hover:cursor-pointer transition-colors">
+                                                <button
+                                                    onClick={() => {
+                                                        handleDelete(
+                                                            product._id
+                                                        );
+                                                    }}
+                                                    className="text-error px-3 py-2 rounded-sm bg-red-200 hover:text-error-focus hover:cursor-pointer transition-colors"
+                                                >
                                                     Delete
                                                 </button>
                                             </div>
@@ -143,10 +170,3 @@ const page = () => {
 };
 
 export default page;
-
-// availability color mapping
-const availabilityColors = {
-    available: "bg-success/20",
-    booked: "bg-warning/20",
-    maintenance: "bg-error/20",
-};

@@ -1,16 +1,25 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import ProductCard from "@/components/ProductCard";
 import Image from "next/image";
 import React from "react";
 import { CircleArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import useAxios from "@/hooks/useAxios";
 
-const Product = () => {
-    const id = 1;
+const Product = ({ params }) => {
+    const { id } = use(params);
+    const axios = useAxios();
+    const [product, setProduct] = useState({});
     const router = useRouter();
-    const productData = products.find((product) => product.id === id);
+
+    useEffect(() => {
+        if (!id) return;
+        axios.get(`/products/${id}`).then((data) => {
+            setProduct(data.data);
+        });
+    }, [axios, id]);
     return (
         <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
             <CircleArrowLeft
@@ -23,7 +32,7 @@ const Product = () => {
                 <div className="px-5 lg:px-16 xl:px-20">
                     <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
                         <Image
-                            src={productData.imgSrc}
+                            src={product.productImage}
                             alt="alt"
                             className="w-full h-auto object-cover mix-blend-multiply"
                             width={1280}
@@ -34,43 +43,32 @@ const Product = () => {
 
                 <div className="flex flex-col">
                     <h1 className="text-3xl font-medium text-gray-800/90 mb-4">
-                        {productData.name}
+                        {product.productName}
                     </h1>
                     <div className="flex items-center gap-2">
                         <div className="flex items-center gap-0.5">
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_icon}
-                                alt="star_icon"
-                            />
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_icon}
-                                alt="star_icon"
-                            />
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_icon}
-                                alt="star_icon"
-                            />
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_icon}
-                                alt="star_icon"
-                            />
-                            <Image
-                                className="h-4 w-4"
-                                src={assets.star_dull_icon}
-                                alt="star_dull_icon"
-                            />
+                            <p className="text-lg">({product.ratings})</p>
+                            {Array.from({
+                                length: Math.ceil(product.ratings),
+                            }).map((_, index) => (
+                                <Image
+                                    key={index}
+                                    className="h-5 w-5"
+                                    src={
+                                        index < Math.floor(4)
+                                            ? assets.star_icon
+                                            : assets.star_dull_icon
+                                    }
+                                    alt="star_icon"
+                                />
+                            ))}
                         </div>
-                        <p>(4.5)</p>
                     </div>
                     <p className="text-gray-600 mt-3">
-                        {productData.description}
+                        {product.shortDesription}
                     </p>
                     <p className="text-3xl font-medium mt-6">
-                        ${productData.price}
+                        ${product.price}
                     </p>
                     <hr className="bg-gray-600 my-6" />
                     <div className="overflow-x-auto">
@@ -95,7 +93,7 @@ const Product = () => {
                                         Category
                                     </td>
                                     <td className="text-gray-800/50">
-                                        {productData.category}
+                                        {product.category}
                                     </td>
                                 </tr>
                             </tbody>
@@ -111,21 +109,9 @@ const Product = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col items-center">
-                <div className="flex flex-col items-center mb-4 mt-16">
-                    <p className="text-3xl font-medium">
-                        Featured
-                        <span className="font-medium text-orange-600">
-                            Products
-                        </span>
-                    </p>
-                    <div className="w-28 h-0.5 bg-orange-600 mt-2"></div>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
-                    {products.slice(0, 5).map((product, index) => (
-                        <ProductCard key={index} product={product} />
-                    ))}
-                </div>
+            <div className="">
+                <h2 className="font-bold text-2xl">Description</h2>
+                <p className="text-gray-500">{product.description}</p>
             </div>
         </div>
     );

@@ -104,12 +104,12 @@ const Navbar = () => {
                                 {/* Dropdown */}
                                 {openDropdown && (
                                     <div className="absolute right-0 top-10 mt-2 w-40 bg-white border rounded-md shadow-lg py-2 z-50">
-                                        <Link
+                                        {/* <Link
                                             href="/"
                                             className="block px-4 py-2 hover:bg-gray-100"
                                         >
                                             My Profile
-                                        </Link>
+                                        </Link> */}
                                         <Link
                                             href="/addProduct"
                                             className="block px-4 py-2 hover:bg-gray-100"

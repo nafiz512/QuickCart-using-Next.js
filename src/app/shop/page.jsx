@@ -1,8 +1,17 @@
+"use client";
 import ProductCard from "@/components/ProductCard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
+import useAxios from "@/hooks/useAxios";
 
 const Shop = () => {
+    const axios = useAxios();
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        axios.get(`/products`).then((data) => {
+            setProducts(data.data);
+        });
+    }, [axios]);
     return (
         <div className=" pt-14 pb-10 space-y-10">
             {/* --- Title & Description Section --- */}
@@ -12,7 +21,7 @@ const Shop = () => {
                 </h1>
                 <p className="text-lg text-gray-500 max-w-2xl mx-auto">
                     Explore our curated collection of high-quality products. Use
-                    the search bar or filters to find exactly what you're
+                    the search bar or filters to find exactly what you&apos;re
                     looking for.
                 </p>
             </header>
@@ -43,7 +52,7 @@ const Shop = () => {
 
             {/* --- Product Grid Section --- */}
             <div className="flex justify-center">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
                     {products.map((product, index) => (
                         <ProductCard key={index} product={product} />
                     ))}
