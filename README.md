@@ -1,37 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📦 QuickCart – Online Shopping Platform
 
-## Getting Started
+QuickCart is a modern online shopping web application where users can **browse, add, view, delete, and manage products** such as laptops, mobiles, and headphones.  
+It includes **secure authentication**, **protected routes**, and a fully responsive UI built with **Next.js**, **TailwindCSS**, **DaisyUI**, and an **Express.js backend**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Features
+
+## 🚀 Features
+
+- Fully responsive modern UI (Next.js + TailwindCSS + DaisyUI)
+- Google & Credentials authentication (NextAuth.js)
+- Protected pages with auto-redirect for unauthorized users
+- Product listing with search & filters
+- Product details page with full information
+- Add Product page (protected) with form validation
+- Manage Products page with View & Delete actions
+- Express.js backend API with CRUD endpoints
+- Reusable components (Navbar, Hero, Cards, Footer)
+- Clean typography, spacing & hover animations
+- Mobile-first design with consistent layout system
+- Shows toast/alert on success 
+
+---
+
+# 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | Next.js (App Router), React, TailwindCSS, DaisyUI |
+| **Auth** | NextAuth.js (Google + Credentials) |
+| **Backend** | Express.js REST API |
+| **Database** | MongoDB |
+| **Deployment** | Vercel  |
+
+---
+
+# 📁 Project Structure
+```
+QuickCart/
+│── backend/ # Express.js API
+│── src/
+│ ├── app/ # Next.js App Router
+│ │ ├── (routes)
+│ │ ├── add-product/
+│ │ ├── manage-products/
+│ │ ├── products/
+│ │ ├── products/[id]/
+│ │ └── login/
+│ ├── components/ # Navbar, Hero, Cards, Footer
+│ ├── context/ # AuthContext
+│ ├── hooks/ # useAxios, etc.
+│── public/
+│── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# ⚙️ Setup & Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📌 1. Clone the Repository
+```bash
+git clone https://github.com/nafiz512/QuickCart-using-Next.js.git
+cd quickcart
 
-## Learn More
+npm install
+```
+| Method | Route | Description |
+|--------|--------|-------------|
+| GET | /products | Get all products |
+| GET | /products/:id | Get product details |
+| POST | /products | Add new product |
+| DELETE | /products/:id | Delete product |
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# QuickCart-using-Next.js
