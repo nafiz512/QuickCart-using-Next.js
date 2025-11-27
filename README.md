@@ -7,8 +7,6 @@ It includes **secure authentication**, **protected routes**, and a fully respons
 
 ## 🚀 Features
 
-## 🚀 Features
-
 - Fully responsive modern UI (Next.js + TailwindCSS + DaisyUI)
 - Google & Credentials authentication (NextAuth.js)
 - Protected pages with auto-redirect for unauthorized users
