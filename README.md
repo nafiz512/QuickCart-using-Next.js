@@ -66,6 +66,7 @@ cd quickcart
 
 npm install
 ```
+## Backend (Express.js API)
 | Method | Route | Description |
 |--------|--------|-------------|
 | GET | /products | Get all products |
